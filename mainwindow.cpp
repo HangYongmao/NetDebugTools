@@ -82,7 +82,12 @@ void MainWindow::client_Socket_Read_Data()
     if (buffer.isEmpty())
         return;
 
-    ui->textEdit_Client_Receive->append(buffer.toHex());
+    if (ui->checkBox_Client_Receive_Time->isChecked())
+        ui->textEdit_Client_Receive->append(QString("\r\n[%1]").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")));
+    if (ui->radioButton_Client_Receive_A->isChecked())
+        ui->textEdit_Client_Receive->append(buffer);
+    else
+        ui->textEdit_Client_Receive->append(buffer.toHex().toUpper());
 }
 
 // Client 断开Socket

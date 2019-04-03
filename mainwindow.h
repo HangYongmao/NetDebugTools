@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QTcpSocket>
 #include <QDebug>
+#include <QDateTime>
+#include <QByteArray>
 
 namespace Ui {
 class MainWindow;
