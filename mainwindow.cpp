@@ -59,11 +59,33 @@ void MainWindow::on_pushButton_Clien_Connect_clicked()
         // 断开连接
         clientSocket->disconnectFromHost();
 
+        ui->pushButton_Clien_Connect->setText("连接");
+        ui->pushButton_Client_Send->setEnabled(false);
     }
 }
 
 // Client 发送数据
 void MainWindow::on_pushButton_Client_Send_clicked()
 {
+    clientSocket->write(ui->textEdit_Client_Send->toPlainText().toLatin1());
+    clientSocket->flush();
+}
 
+// Client 接收数据
+void MainWindow::client_Socket_Read_Data()
+{
+    QByteArray buffer;
+    buffer = clientSocket->readAll();
+    if (buffer.isEmpty())
+        return;
+
+    ui->textEdit_Client_Receive->append(buffer.toHex());
+}
+
+// Client 断开Socket
+void MainWindow::client_Socket_DisConnected()
+{
+    ui->pushButton_Client_Send->setEnabled(false);
+    ui->pushButton_Clien_Connect->setText("连接");
+    qDebug() << "DisConnected.";
 }
