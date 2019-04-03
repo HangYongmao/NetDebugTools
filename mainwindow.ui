@@ -493,7 +493,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_Client_IP_3">
+                <widget class="QComboBox" name="comboBox_Server_IP">
                  <property name="minimumSize">
                   <size>
                    <width>0</width>
@@ -531,7 +531,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_Client_Port_3">
+                <widget class="QComboBox" name="comboBox_Server_Port">
                  <property name="minimumSize">
                   <size>
                    <width>0</width>
@@ -562,7 +562,7 @@
                 </size>
                </property>
                <property name="text">
-                <string>连接</string>
+                <string>打开</string>
                </property>
               </widget>
              </item>
