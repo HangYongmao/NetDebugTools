@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QTcpSocket>
+#include <QTcpServer>
 #include <QDebug>
 #include <QDateTime>
 #include <QByteArray>
@@ -25,10 +26,17 @@ private slots:
     void on_pushButton_Client_Send_clicked();   // Client 发送数据
     void client_Socket_Read_Data();             // Client 接收数据
     void client_Socket_DisConnected();          // Client 断开Socket
+// Server
+    void on_pushButton_Server_Open_clicked();   // Server 打开/关闭
+    void on_pushButton_Server_Send_clicked();   // Server 发送数据
+    void server_New_connect();                  // Server 创建新连接
+    //void server_Read_Data();                    //
 
 private:
     Ui::MainWindow *ui;
     QTcpSocket *clientSocket;   // Client Socket
+
+    QByteArray QByteArrayToHex(QByteArray byteArray);  // QByteArray转Hex 含空格
 };
 
 #endif // MAINWINDOW_H

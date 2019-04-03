@@ -89,11 +89,16 @@ void MainWindow::client_Socket_Read_Data()
         return;
 
     if (ui->checkBox_Client_Receive_Time->isChecked())
-        ui->textEdit_Client_Receive->append(QString("\r\n[%1]").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")));
+    {
+        if (ui->textEdit_Client_Receive->toPlainText().isEmpty())
+            ui->textEdit_Client_Receive->append(QString("[%1]").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")));
+        else
+            ui->textEdit_Client_Receive->append(QString("\r\n[%1]").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")));
+    }
     if (ui->radioButton_Client_Receive_A->isChecked())
         ui->textEdit_Client_Receive->append(buffer);
     else
-        ui->textEdit_Client_Receive->append(buffer.toHex().toUpper());
+        ui->textEdit_Client_Receive->append(QByteArrayToHex(buffer));
 }
 
 // Client 断开Socket
@@ -107,4 +112,39 @@ void MainWindow::client_Socket_DisConnected()
     // 设置标题的图标
     MainWindow::setWindowIcon(QIcon(":/images/disconnect.png"));
     qDebug() << "DisConnected.";
+}
+
+// Server 打开/关闭
+void MainWindow::on_pushButton_Server_Open_clicked()
+{
+
+}
+
+// Server 发送数据
+void MainWindow::on_pushButton_Server_Send_clicked()
+{
+
+}
+
+// Server 创建新连接
+void MainWindow::server_New_connect()
+{
+
+}
+
+// QByteArray转Hex 含空格
+QByteArray MainWindow::QByteArrayToHex(QByteArray byteArray)
+{
+    QByteArray buffer;
+    const char HEX[] = "0123456789ABCDEF";
+
+    for (int i=0; i<byteArray.size()-1; i++)
+    {
+        buffer.append(HEX[byteArray.at(i)/16]);
+        buffer.append(HEX[byteArray.at(i)%16]);
+        buffer.append(" ");
+    }
+    buffer.append(HEX[byteArray.at(byteArray.size()-1)/16]);
+    buffer.append(HEX[byteArray.at(byteArray.size()-1)%16]);
+    return buffer;
 }
