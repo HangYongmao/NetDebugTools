@@ -17,7 +17,6 @@ MainWindow::MainWindow(QWidget *parent) :
     tcpServer    = new QTcpServer();
     serverSocket = NULL;
 
-
     // 连接信号槽
     connect(clientSocket, &QTcpSocket::readyRead, this, &MainWindow::client_Socket_Read_Data);
     connect(clientSocket, &QTcpSocket::disconnected, this, &MainWindow::client_Socket_DisConnected);
@@ -196,6 +195,8 @@ void MainWindow::server_Read_Data()
 // Server 断开Socket
 void MainWindow::server_Disconnected()
 {
+    ui->pushButton_Server_Send->setEnabled(false);
+    qDebug() << "Disconnected.";
 }
 
 // QByteArray转Hex 含空格
