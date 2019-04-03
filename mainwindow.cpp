@@ -54,6 +54,9 @@ void MainWindow::on_pushButton_Clien_Connect_clicked()
         ui->pushButton_Clien_Connect->setText("断开");
         ui->comboBox_Client_IP->setEnabled(false);
         ui->comboBox_Client_Port->setEnabled(false);
+
+        // 设置标题的图标
+        MainWindow::setWindowIcon(QIcon(":/images/connect.png"));
     }
     else
     {
@@ -64,6 +67,9 @@ void MainWindow::on_pushButton_Clien_Connect_clicked()
         ui->pushButton_Client_Send->setEnabled(false);
         ui->comboBox_Client_IP->setEnabled(true);
         ui->comboBox_Client_Port->setEnabled(true);
+
+        // 设置标题的图标
+        MainWindow::setWindowIcon(QIcon(":/images/disconnect.png"));
     }
 }
 
@@ -97,5 +103,8 @@ void MainWindow::client_Socket_DisConnected()
     ui->pushButton_Clien_Connect->setText("连接");
     ui->comboBox_Client_IP->setEnabled(true);
     ui->comboBox_Client_Port->setEnabled(true);
+
+    // 设置标题的图标
+    MainWindow::setWindowIcon(QIcon(":/images/disconnect.png"));
     qDebug() << "DisConnected.";
 }
