@@ -52,8 +52,8 @@ void MainWindow::on_pushButton_Clien_Connect_clicked()
 
         ui->pushButton_Client_Send->setEnabled(true);
         ui->pushButton_Clien_Connect->setText("断开");
-        ui->comboBox_Client_IP->setEditable(false);
-        ui->comboBox_Client_Port->setEditable(false);
+        ui->comboBox_Client_IP->setEnabled(false);
+        ui->comboBox_Client_Port->setEnabled(false);
     }
     else
     {
@@ -62,8 +62,8 @@ void MainWindow::on_pushButton_Clien_Connect_clicked()
 
         ui->pushButton_Clien_Connect->setText("连接");
         ui->pushButton_Client_Send->setEnabled(false);
-        ui->comboBox_Client_IP->setEditable(true);
-        ui->comboBox_Client_Port->setEditable(true);
+        ui->comboBox_Client_IP->setEnabled(true);
+        ui->comboBox_Client_Port->setEnabled(true);
     }
 }
 
@@ -90,7 +90,7 @@ void MainWindow::client_Socket_DisConnected()
 {
     ui->pushButton_Client_Send->setEnabled(false);
     ui->pushButton_Clien_Connect->setText("连接");
-    ui->comboBox_Client_IP->setEditable(true);
-    ui->comboBox_Client_Port->setEditable(true);
+    ui->comboBox_Client_IP->setEnabled(true);
+    ui->comboBox_Client_Port->setEnabled(true);
     qDebug() << "DisConnected.";
 }
