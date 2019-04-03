@@ -26,6 +26,7 @@ private slots:
     void on_pushButton_Client_Send_clicked();   // Client 发送数据
     void client_Socket_Read_Data();             // Client 接收数据
     void client_Socket_DisConnected();          // Client 断开Socket
+    void client_Socket_Error(QAbstractSocket::SocketError socketError); // Client 错误信息
 // Server
     void on_pushButton_Server_Open_clicked();   // Server 打开/关闭
     void on_pushButton_Server_Send_clicked();   // Server 发送数据

@@ -18,9 +18,14 @@ MainWindow::MainWindow(QWidget *parent) :
     serverSocket = NULL;
 
     // 连接信号槽
+    // Client
     connect(clientSocket, &QTcpSocket::readyRead, this, &MainWindow::client_Socket_Read_Data);
     connect(clientSocket, &QTcpSocket::disconnected, this, &MainWindow::client_Socket_DisConnected);
 
+    typedef void (QAbstractSocket::*QAbstractSocketErrorSignal)(QAbstractSocket::SocketError);
+    connect(clientSocket, static_cast<QAbstractSocketErrorSignal>(&QTcpSocket::error), this, &MainWindow::client_Socket_Error);
+
+    // Server
     connect(tcpServer, &QTcpServer::newConnection, this, &MainWindow::server_New_connect);
 }
 
@@ -118,7 +123,13 @@ void MainWindow::client_Socket_DisConnected()
 
     // 设置标题的图标
     MainWindow::setWindowIcon(QIcon(":/images/disconnect.png"));
-    qDebug() << "DisConnected.";
+    qDebug() << "Client DisConnected.";
+}
+
+// Client 错误信息
+void MainWindow::client_Socket_Error(QAbstractSocket::SocketError socketError)
+{
+    qDebug() << socketError;
 }
 
 // Server 打开/关闭
@@ -196,7 +207,7 @@ void MainWindow::server_Read_Data()
 void MainWindow::server_Disconnected()
 {
     ui->pushButton_Server_Send->setEnabled(false);
-    qDebug() << "Disconnected.";
+    qDebug() << "Server Disconnected.";
 }
 
 // QByteArray转Hex 含空格
