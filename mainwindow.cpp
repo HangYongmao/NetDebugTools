@@ -43,7 +43,7 @@ void MainWindow::on_pushButton_Clien_Connect_clicked()
         clientSocket->connectToHost(IP, Port);
 
         // 等待连接成功
-        if (!clientSocket->waitForConnected(30000))
+        if (!clientSocket->waitForConnected(3000))
         {
             qDebug() << "Connection Failed.";
             return;
@@ -51,8 +51,9 @@ void MainWindow::on_pushButton_Clien_Connect_clicked()
         qDebug() << "Connection Successfully.";
 
         ui->pushButton_Client_Send->setEnabled(true);
-
         ui->pushButton_Clien_Connect->setText("断开");
+        ui->comboBox_Client_IP->setEditable(false);
+        ui->comboBox_Client_Port->setEditable(false);
     }
     else
     {
@@ -61,6 +62,8 @@ void MainWindow::on_pushButton_Clien_Connect_clicked()
 
         ui->pushButton_Clien_Connect->setText("连接");
         ui->pushButton_Client_Send->setEnabled(false);
+        ui->comboBox_Client_IP->setEditable(true);
+        ui->comboBox_Client_Port->setEditable(true);
     }
 }
 
@@ -87,5 +90,7 @@ void MainWindow::client_Socket_DisConnected()
 {
     ui->pushButton_Client_Send->setEnabled(false);
     ui->pushButton_Clien_Connect->setText("连接");
+    ui->comboBox_Client_IP->setEditable(true);
+    ui->comboBox_Client_Port->setEditable(true);
     qDebug() << "DisConnected.";
 }
