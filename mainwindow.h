@@ -7,6 +7,9 @@
 #include <QDebug>
 #include <QDateTime>
 #include <QByteArray>
+#include <QList>
+#include <QTableWidget>
+#include <QScrollBar>
 
 namespace Ui {
 class MainWindow;
@@ -40,8 +43,13 @@ private:
 
     QTcpServer *tcpServer;
     QTcpSocket *serverSocket;   // Server Socket
+    QList<QTcpSocket*> tcpClientSocketList;  // 储存所有的客户端连接
 
     QByteArray QByteArrayToHex(QByteArray byteArray);  // QByteArray转Hex 含空格
+    void InitClientListTableWidgetUI(); // Server 客户端列表
+    void paintEvent(QPaintEvent *event);    // 控制TableWidget的列宽
+    void InsertClientIntoTableWidget(QString IP, int Port); // Server 客户端列表中添加数据
+    void RemoveClientRow(QString IP, int Port);     // Server 删除某个客户端连接
 };
 
 #endif // MAINWINDOW_H

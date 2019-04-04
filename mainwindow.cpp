@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
     // 设置标题的图标
     MainWindow::setWindowIcon(QIcon(":/images/disconnect.png"));
 
+    InitClientListTableWidgetUI();
+
     clientSocket = new QTcpSocket();
 
     tcpServer    = new QTcpServer();
@@ -172,6 +174,11 @@ void MainWindow::server_New_connect()
 {
     // 获取客户端连接
     serverSocket = tcpServer->nextPendingConnection();
+    tcpClientSocketList.append(serverSocket);
+    InsertClientIntoTableWidget(serverSocket->peerAddress().toString().mid(serverSocket->peerAddress().toString().indexOf(QRegExp("\\d+"))), \
+                                serverSocket->peerPort());
+//    qDebug() << serverSocket->peerAddress().toString().mid(serverSocket->peerAddress().toString().indexOf(QRegExp("\\d+")));
+//    qDebug() << serverSocket->peerPort();
 
     // 连接QTcpSocket的信号槽
     connect(serverSocket, &QTcpSocket::readyRead, this, &MainWindow::server_Read_Data);
@@ -179,7 +186,8 @@ void MainWindow::server_New_connect()
 
     // 发送按键使能
     ui->pushButton_Server_Send->setEnabled(true);
-    qDebug() << "A New Client Connect.";
+    qDebug() << "A New Client Connect." << serverSocket->peerAddress().toString().mid(serverSocket->peerAddress().toString().indexOf(QRegExp("\\d+")))\
+             << ":" << serverSocket->peerPort() ;
 }
 
 // Server 接收数据
@@ -206,8 +214,15 @@ void MainWindow::server_Read_Data()
 // Server 断开Socket
 void MainWindow::server_Disconnected()
 {
+    QTcpSocket * disConnectSocket = qobject_cast<QTcpSocket *>(sender());
     ui->pushButton_Server_Send->setEnabled(false);
-    qDebug() << "Server Disconnected.";
+    qDebug() << "Server Disconnected." << disConnectSocket->peerAddress().toString().mid(disConnectSocket->peerAddress().toString().indexOf(QRegExp("\\d+")))\
+             << ":" << disConnectSocket->peerPort();
+    RemoveClientRow(disConnectSocket->peerAddress().toString().mid(disConnectSocket->peerAddress().toString().indexOf(QRegExp("\\d+"))), \
+                    disConnectSocket->peerPort());
+    foreach (QTcpSocket *clientSocket, tcpClientSocketList) {
+        qDebug() << clientSocket->peerPort();
+    }
 }
 
 // QByteArray转Hex 含空格
@@ -225,4 +240,98 @@ QByteArray MainWindow::QByteArrayToHex(QByteArray byteArray)
     buffer.append(HEX[byteArray.at(byteArray.size()-1)/16]);
     buffer.append(HEX[byteArray.at(byteArray.size()-1)%16]);
     return buffer;
+}
+
+// Server 客户端列表
+void MainWindow::InitClientListTableWidgetUI()
+{
+    // 设置列数, 行数动态增加
+    ui->tableWidget->setColumnCount(2);
+
+    // 创建表头
+    QStringList header;
+    header << "IP" << "Port";
+    ui->tableWidget->setHorizontalHeaderLabels(header);
+
+    // 列宽
+    ui->tableWidget->setColumnWidth(0, ui->tableWidget->width()-ui->tableWidget->width()/3);
+    ui->tableWidget->setColumnWidth(1, ui->tableWidget->width()/3);
+
+    // 表格禁止编辑
+    ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    // 隐藏行表头
+    ui->tableWidget->verticalHeader()->setVisible(false);
+
+    // 隔行换色
+    ui->tableWidget->setAlternatingRowColors(true);
+    ui->tableWidget->setStyleSheet("alternate-background-color: rgb(240, 240, 240);");
+
+    // 列宽禁止拖动
+    // ui->tableWidget->horizontalHeader()->setDisabled(true);
+
+    // 行高禁止拖动
+    ui->tableWidget->verticalHeader()->setDisabled(true);
+
+    // 设置选中模式为选中行
+    ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    // 设置选中单个
+    ui->tableWidget->setSelectionMode( QAbstractItemView::SingleSelection);
+}
+
+// 控制TableWidget的列宽
+void MainWindow::paintEvent(QPaintEvent *event)
+{
+    // 2:1
+    int width=0;
+    if (event != NULL)
+    {
+        if (ui->tableWidget->verticalScrollBar()->isVisible())
+        {
+            width = ui->tableWidget->width()-ui->tableWidget->verticalScrollBar()->width();
+        }
+        else
+        {
+            width = ui->tableWidget->width();
+        }
+
+        ui->tableWidget->setColumnWidth(0, width-width/3);
+        ui->tableWidget->setColumnWidth(1, width/3);
+    }
+}
+
+// Server 客户端列表中添加数据
+void MainWindow::InsertClientIntoTableWidget(QString IP, int Port)
+{
+    // 插入一行
+    int row = ui->tableWidget->rowCount();
+    ui->tableWidget->insertRow(row);
+    ui->tableWidget->setRowHeight(row, 20);
+
+    QTableWidgetItem *check = new QTableWidgetItem();
+    check->setCheckState(Qt::Unchecked);
+    ui->tableWidget->setItem(row, 0, check); //插入复选框
+    check->setText(IP);
+
+    QTableWidgetItem *itemPort = new QTableWidgetItem(QString::number(Port));
+    itemPort->setTextAlignment(Qt::AlignLeft);
+    ui->tableWidget->setItem(row, 1, itemPort);
+}
+
+// Server 删除某个客户端连接
+void MainWindow::RemoveClientRow(QString IP, int Port)
+{
+    for (int i=0; i<ui->tableWidget->rowCount(); i++)
+    {
+        if ((ui->tableWidget->item(i, 0) != NULL) && (ui->tableWidget->item(i, 1) != NULL))
+        {
+            if ((ui->tableWidget->item(i, 0)->text() == IP ) && (QString::number(Port) == ui->tableWidget->item(i, 1)->text()))
+            {
+                ui->tableWidget->removeRow(i);
+                tcpClientSocketList.removeAt(i);
+                break;
+            }
+        }
+    }
 }
