@@ -489,7 +489,22 @@ void MainWindow::on_pushButton_UDP_Open_clicked()
 // UDP 发送数据
 void MainWindow::on_pushButton_UDP_Send_clicked()
 {
-    udpSocket->writeDatagram("Testtt", QHostAddress("127.0.0.1"), 8889);
+    if (ui->textEdit_UDP_Send->toPlainText().isEmpty())
+        return;
+    int clientCount=0;
+    for (int i=0; i<ui->tableWidget_UDP->rowCount(); i++)
+    {
+        if (ui->tableWidget_UDP->item(i, 0) != NULL)
+        {
+            if (ui->tableWidget_UDP->item(i, 0)->checkState() == Qt::Checked)
+            {
+                udpSocket->writeDatagram(ui->textEdit_UDP_Send->toPlainText().toLatin1(), UDPClientList.at(i).IP, UDPClientList.at(i).Port);
+                clientCount++;
+            }
+        }
+    }
+    if (clientCount == 0)
+        qDebug() << "No Client Select.";
 }
 
 // UDP 接收数据
