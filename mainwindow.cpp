@@ -181,8 +181,8 @@ void MainWindow::server_New_connect()
 //    qDebug() << serverSocket->peerPort();
 
     // 连接QTcpSocket的信号槽
-    connect(serverSocket, &QTcpSocket::readyRead, this, &MainWindow::server_Read_Data);
-    connect(serverSocket, &QTcpSocket::disconnected, this, &MainWindow::server_Disconnected);
+    connect(tcpClientSocketList.at(tcpClientSocketList.length()-1), &QTcpSocket::readyRead, this, &MainWindow::server_Read_Data);
+    connect(tcpClientSocketList.at(tcpClientSocketList.length()-1), &QTcpSocket::disconnected, this, &MainWindow::server_Disconnected);
 
     // 发送按键使能
     ui->pushButton_Server_Send->setEnabled(true);
@@ -194,7 +194,8 @@ void MainWindow::server_New_connect()
 void MainWindow::server_Read_Data()
 {
     QByteArray buffer;
-    buffer = serverSocket->readAll();
+    QTcpSocket * clientSocket = qobject_cast<QTcpSocket *>(sender());
+    buffer = clientSocket->readAll();
     if (buffer.isEmpty())
         return;
 
@@ -216,7 +217,6 @@ void MainWindow::server_Read_Data()
     // 显示客户端来源
     if (ui->checkBox_Server_For_Client->isChecked())
     {
-        QTcpSocket * clientSocket = qobject_cast<QTcpSocket *>(sender());
         QString IP = clientSocket->peerAddress().toString().mid(clientSocket->peerAddress().toString().indexOf(QRegExp("\\d+")));
         int Port = clientSocket->peerPort();
         ui->textEdit_Server_Receive->append(QString("[From %1:%2]").arg(IP).arg(Port));
