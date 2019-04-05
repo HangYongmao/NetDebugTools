@@ -432,6 +432,8 @@ void MainWindow::InitUDPClientTableWidget()
 // UDP 客户端列表中添加数据
 void MainWindow::InsertUDPClientUI(QString IP, quint16 Port)
 {
+    if (IP.isEmpty())
+        return;
     foreach (UDPClient udpClient, UDPClientList) {
         if ((IP == udpClient.IP.toString()) && (Port == udpClient.Port))
             return;
@@ -460,13 +462,28 @@ void MainWindow::on_pushButton_UDP_Open_clicked()
 {
     if (ui->pushButton_UDP_Open->text() == "打开")
     {
-        udpSocket->bind(QHostAddress(ui->comboBox_UDP_IP->currentText()), ui->comboBox_UDP_Port->currentText().toShort());
+        if (udpSocket->bind(QHostAddress(ui->comboBox_UDP_IP->currentText()), \
+                            ui->comboBox_UDP_Port->currentText().toShort(), QUdpSocket::ShareAddress) == false)
+            return;
         connect(udpSocket, &QUdpSocket::readyRead, this, &MainWindow::udp_Socket_Read_Data);
         typedef void (QAbstractSocket::*QAbstractSocketErrorSignal)(QAbstractSocket::SocketError);
         connect(udpSocket, static_cast<QAbstractSocketErrorSignal>(&QUdpSocket::error), this, &MainWindow::udp_Socket_Error);
 
         ui->pushButton_UDP_Send->setEnabled(true);
+        ui->pushButton_UDP_Open->setText("关闭");
     }
+    else
+    {
+        ui->pushButton_UDP_Send->setEnabled(false);
+        ui->pushButton_UDP_Open->setText("打开");
+
+        // 解除connect
+        disconnect(udpSocket, &QUdpSocket::readyRead, this, &MainWindow::udp_Socket_Read_Data);
+        typedef void (QAbstractSocket::*QAbstractSocketErrorSignal)(QAbstractSocket::SocketError);
+        disconnect(udpSocket, static_cast<QAbstractSocketErrorSignal>(&QUdpSocket::error), this, &MainWindow::udp_Socket_Error);
+        udpSocket->close();
+    }
+
 }
 
 // UDP 发送数据
