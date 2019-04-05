@@ -34,6 +34,21 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // UDP
     udpSocket = new QUdpSocket();
+
+    QString verticalBarStyleSheet="QScrollBar{background:transparent; width: 10px;}"
+                                  "QScrollBar::handle{background:lightgray; border:2px solid transparent; border-radius:5px;}"
+                                  "QScrollBar::handle:hover{background:gray;}"
+                                  "QScrollBar::sub-line{background:transparent;}"
+                                  "QScrollBar::add-line{background:transparent;}";
+    ui->tableWidget->verticalScrollBar()->setStyleSheet(verticalBarStyleSheet);
+    ui->tableWidget_UDP->verticalScrollBar()->setStyleSheet(verticalBarStyleSheet);
+
+    ui->textEdit_Client_Receive->verticalScrollBar()->setStyleSheet(verticalBarStyleSheet);
+    ui->textEdit_Client_Send->verticalScrollBar()->setStyleSheet(verticalBarStyleSheet);
+    ui->textEdit_Server_Receive->verticalScrollBar()->setStyleSheet(verticalBarStyleSheet);
+    ui->textEdit_Server_Send->verticalScrollBar()->setStyleSheet(verticalBarStyleSheet);
+    ui->textEdit_UDP_Receive->verticalScrollBar()->setStyleSheet(verticalBarStyleSheet);
+    ui->textEdit_UDP_Send->verticalScrollBar()->setStyleSheet(verticalBarStyleSheet);
 }
 
 MainWindow::~MainWindow()
