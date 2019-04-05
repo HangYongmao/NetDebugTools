@@ -382,7 +382,7 @@ void MainWindow::on_pushButton_UDP_Open_clicked()
 {
     if (ui->pushButton_UDP_Open->text() == "打开")
     {
-        udpSocket->bind(QHostAddress(ui->comboBox_UDP_IP->currentText()), ui->comboBox_UDP_Port->currentText().toLong());
+        udpSocket->bind(QHostAddress(ui->comboBox_UDP_IP->currentText()), ui->comboBox_UDP_Port->currentText().toShort());
         connect(udpSocket, &QUdpSocket::readyRead, this, &MainWindow::udp_Socket_Read_Data);
         typedef void (QAbstractSocket::*QAbstractSocketErrorSignal)(QAbstractSocket::SocketError);
         connect(udpSocket, static_cast<QAbstractSocketErrorSignal>(&QUdpSocket::error), this, &MainWindow::udp_Socket_Error);
@@ -411,7 +411,7 @@ void MainWindow::udp_Socket_Read_Data()
         ReceiveData.append(buffer);
     }
 
-    qDebug() << clientAddress.toString() << clientPort;
+    //qDebug() << clientAddress.toString() << clientPort;
 
     // 在开头添加空行
     if (ui->checkBox_UDP_Receive_Time->isChecked() || ui->checkBox_UDP_For_Client->isChecked())
@@ -429,9 +429,7 @@ void MainWindow::udp_Socket_Read_Data()
     // 显示客户端来源
     if (ui->checkBox_UDP_For_Client->isChecked())
     {
-//        QString IP = clientSocket->peerAddress().toString().mid(clientSocket->peerAddress().toString().indexOf(QRegExp("\\d+")));
-//        int Port = clientSocket->peerPort();
-//        ui->textEdit_Server_Receive->append(QString("[From %1:%2]").arg(IP).arg(Port));
+        ui->textEdit_UDP_Receive->append(QString("[From %1:%2]").arg(clientAddress.toString()).arg(clientPort));
     }
 
     // 显示Hex
