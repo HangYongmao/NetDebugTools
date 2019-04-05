@@ -166,6 +166,7 @@ void MainWindow::on_pushButton_Server_Open_clicked()
 // Server 发送数据
 void MainWindow::on_pushButton_Server_Send_clicked()
 {
+    int clientCount=0;
     for (int i=0; i<ui->tableWidget->rowCount(); i++)
     {
         if (ui->tableWidget->item(i, 0) != NULL)
@@ -173,9 +174,12 @@ void MainWindow::on_pushButton_Server_Send_clicked()
             if (ui->tableWidget->item(i, 0)->checkState() == Qt::Checked)
             {
                 tcpClientSocketList.at(i)->write(ui->textEdit_Server_Send->toPlainText().toLatin1());
+                clientCount++;
             }
         }
     }
+    if (clientCount == 0)
+        qDebug() << "No Client Select.";
 }
 
 // Server 创建新连接
