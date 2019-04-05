@@ -49,6 +49,7 @@ private slots:
     void on_pushButton_UDP_Send_clicked();      // UDP 发送数据
     void udp_Socket_Read_Data();                // UDP 接收数据
     void udp_Socket_Error(QAbstractSocket::SocketError socketError); // UDP 错误信息
+    void on_pushButton_UDP_ADD_clicked();       // 手动增加客户端
 
 private:
     Ui::MainWindow *ui;

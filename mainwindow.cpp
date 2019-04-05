@@ -523,3 +523,9 @@ void MainWindow::udp_Socket_Error(QAbstractSocket::SocketError socketError)
 {
     qDebug() << socketError;
 }
+
+// 手动增加客户端
+void MainWindow::on_pushButton_UDP_ADD_clicked()
+{
+    InsertUDPClientUI(ui->lineEdit_UDP_ADD_IP->text(), ui->spinBox_UDP_ADD_Port->text().toShort());
+}
