@@ -245,14 +245,14 @@ void MainWindow::server_Read_Data()
 void MainWindow::server_Disconnected()
 {
     QTcpSocket * disConnectSocket = qobject_cast<QTcpSocket *>(sender());
-    ui->pushButton_Server_Send->setEnabled(false);
+
     qDebug() << "Server Disconnected." << disConnectSocket->peerAddress().toString().mid(disConnectSocket->peerAddress().toString().indexOf(QRegExp("\\d+")))\
              << ":" << disConnectSocket->peerPort();
     RemoveClientRow(disConnectSocket->peerAddress().toString().mid(disConnectSocket->peerAddress().toString().indexOf(QRegExp("\\d+"))), \
                     disConnectSocket->peerPort());
-    foreach (QTcpSocket *clientSocket, tcpClientSocketList) {
-        qDebug() << clientSocket->peerPort();
-    }
+
+    if (tcpClientSocketList.count() == 0)
+        ui->pushButton_Server_Send->setEnabled(false);
 }
 
 // QByteArray转Hex 含空格
