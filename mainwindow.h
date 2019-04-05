@@ -16,6 +16,11 @@ namespace Ui {
 class MainWindow;
 }
 
+typedef struct{
+    QHostAddress IP;
+    quint16 Port;
+}UDPClient;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -47,19 +52,25 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    void paintEvent(QPaintEvent *event);    // 控制TableWidget的列宽
+    QByteArray QByteArrayToHex(QByteArray byteArray);  // QByteArray转Hex 含空格
+
+// Client
     QTcpSocket *clientSocket;   // Client Socket
 
+// Server
     QTcpServer *tcpServer;
-    QList<QTcpSocket*> tcpClientSocketList;  // 储存所有的客户端连接
-
-    QByteArray QByteArrayToHex(QByteArray byteArray);  // QByteArray转Hex 含空格
-    void InitClientListTableWidgetUI(); // Server 客户端列表
-    void paintEvent(QPaintEvent *event);    // 控制TableWidget的列宽
-    void InsertClientIntoTableWidget(QString IP, int Port); // Server 客户端列表中添加数据
+    QList<QTcpSocket*> tcpClientSocketList;         // Server 储存所有的客户端连接
+    void InitClientListTableWidgetUI();             // Server 客户端列表
+    void InsertClientIntoTableWidget(QString IP, quint16 Port); // Server 客户端列表中添加数据
     void RemoveClientRow(QString IP, int Port);     // Server 删除某个客户端连接
-    void server_Close_All_Client();         // 断开所有客户端
+    void server_Close_All_Client();                 // 断开所有客户端
 
+// UDP
     QUdpSocket *udpSocket;
+    QList<UDPClient> UDPClientList;                 // UDP 储存所有的客户端连接
+    void InitUDPClientTableWidget();                // UDP 客户端列表
+    void InsertUDPClientUI(QString IP, quint16 Port);   // UDP 客户端列表中添加数据
 };
 
 #endif // MAINWINDOW_H

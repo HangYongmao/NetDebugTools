@@ -12,7 +12,10 @@ MainWindow::MainWindow(QWidget *parent) :
     // 设置标题的图标
     MainWindow::setWindowIcon(QIcon(":/images/disconnect.png"));
 
+    // Server 客户端列表
     InitClientListTableWidgetUI();
+    // UDP 客户端列表
+    InitUDPClientTableWidget();
 
     clientSocket = new QTcpSocket();
 
@@ -310,7 +313,7 @@ void MainWindow::InitClientListTableWidgetUI()
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     // 设置选中单个
-    ui->tableWidget->setSelectionMode( QAbstractItemView::SingleSelection);
+    ui->tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
 // 控制TableWidget的列宽
@@ -328,14 +331,25 @@ void MainWindow::paintEvent(QPaintEvent *event)
         {
             width = ui->tableWidget->width();
         }
-
         ui->tableWidget->setColumnWidth(0, width-width/3);
         ui->tableWidget->setColumnWidth(1, width/3);
+
+        if (ui->tableWidget_UDP->verticalScrollBar()->isVisible())
+        {
+            width = ui->tableWidget_UDP->width()-ui->tableWidget_UDP->verticalScrollBar()->width();
+        }
+        else
+        {
+            width = ui->tableWidget_UDP->width();
+        }
+
+        ui->tableWidget_UDP->setColumnWidth(0, width-width/3);
+        ui->tableWidget_UDP->setColumnWidth(1, width/3);
     }
 }
 
 // Server 客户端列表中添加数据
-void MainWindow::InsertClientIntoTableWidget(QString IP, int Port)
+void MainWindow::InsertClientIntoTableWidget(QString IP, quint16 Port)
 {
     // 插入一行
     int row = ui->tableWidget->rowCount();
@@ -377,6 +391,70 @@ void MainWindow::server_Close_All_Client()
     }
 }
 
+// UDP 客户端列表
+void MainWindow::InitUDPClientTableWidget()
+{
+    // 设置列数, 行数动态增加
+    ui->tableWidget_UDP->setColumnCount(2);
+
+    // 创建表头
+    QStringList header;
+    header << "IP" << "Port";
+    ui->tableWidget_UDP->setHorizontalHeaderLabels(header);
+
+    // 列宽
+    ui->tableWidget_UDP->setColumnWidth(0, ui->tableWidget_UDP->width()-ui->tableWidget_UDP->width()/3);
+    ui->tableWidget_UDP->setColumnWidth(1, ui->tableWidget_UDP->width()/3);
+
+    // 表格禁止编辑
+    ui->tableWidget_UDP->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    // 隐藏行表头
+    ui->tableWidget_UDP->verticalHeader()->setVisible(false);
+
+    // 隔行换色
+    ui->tableWidget_UDP->setAlternatingRowColors(true);
+    ui->tableWidget_UDP->setStyleSheet("alternate-background-color: rgb(240, 240, 240);");
+
+    // 列宽禁止拖动
+    // ui->tableWidget_UDP->horizontalHeader()->setDisabled(true);
+
+    // 行高禁止拖动
+    ui->tableWidget_UDP->verticalHeader()->setDisabled(true);
+
+    // 设置选中模式为选中行
+    ui->tableWidget_UDP->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    // 设置选中单个
+    ui->tableWidget_UDP->setSelectionMode(QAbstractItemView::SingleSelection);
+}
+
+// UDP 客户端列表中添加数据
+void MainWindow::InsertUDPClientUI(QString IP, quint16 Port)
+{
+    foreach (UDPClient udpClient, UDPClientList) {
+        if ((IP == udpClient.IP.toString()) && (Port == udpClient.Port))
+            return;
+    }
+
+    UDPClient udpClient = {QHostAddress(IP), Port};
+    UDPClientList.append(udpClient);
+
+    // 插入一行
+    int row = ui->tableWidget_UDP->rowCount();
+    ui->tableWidget_UDP->insertRow(row);
+    ui->tableWidget_UDP->setRowHeight(row, 20);
+
+    QTableWidgetItem *check = new QTableWidgetItem();
+    check->setCheckState(Qt::Unchecked);
+    ui->tableWidget_UDP->setItem(row, 0, check); //插入复选框
+    check->setText(IP);
+
+    QTableWidgetItem *itemPort = new QTableWidgetItem(QString::number(Port));
+    itemPort->setTextAlignment(Qt::AlignLeft);
+    ui->tableWidget_UDP->setItem(row, 1, itemPort);
+}
+
 // UDP 打开/关闭
 void MainWindow::on_pushButton_UDP_Open_clicked()
 {
@@ -412,6 +490,7 @@ void MainWindow::udp_Socket_Read_Data()
     }
 
     //qDebug() << clientAddress.toString() << clientPort;
+    InsertUDPClientUI(clientAddress.toString(), clientPort);
 
     // 在开头添加空行
     if (ui->checkBox_UDP_Receive_Time->isChecked() || ui->checkBox_UDP_For_Client->isChecked())
