@@ -11,6 +11,9 @@
 #include <QTableWidget>
 #include <QScrollBar>
 #include <QUdpSocket>
+#include <QContextMenuEvent>
+#include <QAction>
+#include <QMenu>
 
 namespace Ui {
 class MainWindow;
@@ -51,9 +54,12 @@ private slots:
     void udp_Socket_Error(QAbstractSocket::SocketError socketError); // UDP 错误信息
     void on_pushButton_UDP_ADD_clicked();       // 手动增加客户端
 
+    void delete_Client_Action();                // 右键菜单点击事件
+
 private:
     Ui::MainWindow *ui;
     void paintEvent(QPaintEvent *event);    // 控制TableWidget的列宽
+    void contextMenuEvent(QContextMenuEvent *event);    // 右键菜单
     QByteArray QByteArrayToHex(QByteArray byteArray);  // QByteArray转Hex 含空格
 
 // Client

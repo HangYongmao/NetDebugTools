@@ -366,6 +366,44 @@ void MainWindow::paintEvent(QPaintEvent *event)
     }
 }
 
+// 右键菜单
+void MainWindow::contextMenuEvent(QContextMenuEvent *event)
+{
+    QMenu *pop_menu = new QMenu(this);
+    QAction *action_delete = new QAction(this);
+
+    QTableWidgetItem *item;
+
+    // TCP Server 界面
+    if (ui->tabWidget->currentIndex() == 1)
+    {
+        if (!ui->tableWidget->underMouse())
+            return;
+        item = ui->tableWidget->currentItem();
+        action_delete->setText("断开");
+    }
+    // UDP 界面
+    else if (ui->tabWidget->currentIndex() == 2)
+    {
+        if (!ui->tableWidget_UDP->underMouse())
+            return;
+        item = ui->tableWidget_UDP->currentItem();
+        action_delete->setText("删除");
+    }
+    else
+        return;
+
+    if (item != NULL)
+    {
+        pop_menu->addAction(action_delete);
+
+        connect(action_delete, &QAction::triggered, this, &MainWindow::delete_Client_Action);
+        //菜单出现的位置为当前鼠标的位置
+        pop_menu->exec(QCursor::pos());
+        event->accept();
+    }
+}
+
 // Server 客户端列表中添加数据
 void MainWindow::InsertClientIntoTableWidget(QString IP, quint16 Port)
 {
@@ -447,7 +485,7 @@ void MainWindow::InitUDPClientTableWidget()
     ui->tableWidget_UDP->setSelectionMode(QAbstractItemView::SingleSelection);
 
     // 点击表时不对表头行光亮（获取焦点）
-    ui->tableWidget->horizontalHeader()->setHighlightSections(false);
+    ui->tableWidget_UDP->horizontalHeader()->setHighlightSections(false);
 }
 
 // UDP 客户端列表中添加数据
@@ -581,4 +619,10 @@ void MainWindow::udp_Socket_Error(QAbstractSocket::SocketError socketError)
 void MainWindow::on_pushButton_UDP_ADD_clicked()
 {
     InsertUDPClientUI(ui->lineEdit_UDP_ADD_IP->text(), ui->spinBox_UDP_ADD_Port->text().toShort());
+}
+
+// 右键菜单点击事件
+void MainWindow::delete_Client_Action()
+{
+    qDebug() << ui->tabWidget->currentIndex();
 }
