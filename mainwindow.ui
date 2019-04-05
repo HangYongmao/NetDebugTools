@@ -610,6 +610,13 @@
               </widget>
              </item>
              <item>
+              <widget class="QCheckBox" name="checkBox_Server_For_Client">
+               <property name="text">
+                <string>显示客户端IP</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <spacer name="verticalSpacer_3">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>

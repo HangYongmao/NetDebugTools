@@ -198,13 +198,31 @@ void MainWindow::server_Read_Data()
     if (buffer.isEmpty())
         return;
 
+    // 在开头添加空行
+    if (ui->checkBox_Server_Receive_Time->isChecked() || ui->checkBox_Server_For_Client->isChecked())
+    {
+        if (!ui->textEdit_Server_Receive->toPlainText().isEmpty())
+            ui->textEdit_Server_Receive->append("");
+        qDebug() << "1";
+    }
+
+    // 显示接收时间
     if (ui->checkBox_Server_Receive_Time->isChecked())
     {
-        if (ui->textEdit_Server_Receive->toPlainText().isEmpty())
-            ui->textEdit_Server_Receive->append(QString("[%1]").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")));
-        else
-            ui->textEdit_Server_Receive->append(QString("\r\n[%1]").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")));
+        ui->textEdit_Server_Receive->append(QString("[%1]").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")));
     }
+
+
+    // 显示客户端来源
+    if (ui->checkBox_Server_For_Client->isChecked())
+    {
+        QTcpSocket * clientSocket = qobject_cast<QTcpSocket *>(sender());
+        QString IP = clientSocket->peerAddress().toString().mid(clientSocket->peerAddress().toString().indexOf(QRegExp("\\d+")));
+        int Port = clientSocket->peerPort();
+        ui->textEdit_Server_Receive->append(QString("[From %1:%2]").arg(IP).arg(Port));
+    }
+
+    // 显示Hex
     if (ui->radioButton_Server_Receive_A->isChecked())
         ui->textEdit_Server_Receive->append(buffer);
     else
