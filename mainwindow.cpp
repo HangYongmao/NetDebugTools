@@ -166,7 +166,16 @@ void MainWindow::on_pushButton_Server_Open_clicked()
 // Server 发送数据
 void MainWindow::on_pushButton_Server_Send_clicked()
 {
-    tcpClientSocketList.at(tcpClientSocketList.length()-1)->write(ui->textEdit_Server_Send->toPlainText().toLatin1());
+    for (int i=0; i<ui->tableWidget->rowCount(); i++)
+    {
+        if (ui->tableWidget->item(i, 0) != NULL)
+        {
+            if (ui->tableWidget->item(i, 0)->checkState() == Qt::Checked)
+            {
+                tcpClientSocketList.at(i)->write(ui->textEdit_Server_Send->toPlainText().toLatin1());
+            }
+        }
+    }
 }
 
 // Server 创建新连接
