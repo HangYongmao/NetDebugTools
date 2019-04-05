@@ -42,7 +42,6 @@ private:
     QTcpSocket *clientSocket;   // Client Socket
 
     QTcpServer *tcpServer;
-    QTcpSocket *serverSocket;   // Server Socket
     QList<QTcpSocket*> tcpClientSocketList;  // 储存所有的客户端连接
 
     QByteArray QByteArrayToHex(QByteArray byteArray);  // QByteArray转Hex 含空格
@@ -50,6 +49,7 @@ private:
     void paintEvent(QPaintEvent *event);    // 控制TableWidget的列宽
     void InsertClientIntoTableWidget(QString IP, int Port); // Server 客户端列表中添加数据
     void RemoveClientRow(QString IP, int Port);     // Server 删除某个客户端连接
+    void server_Close_All_Client();         // 断开所有客户端
 };
 
 #endif // MAINWINDOW_H

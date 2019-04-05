@@ -17,7 +17,6 @@ MainWindow::MainWindow(QWidget *parent) :
     clientSocket = new QTcpSocket();
 
     tcpServer    = new QTcpServer();
-    serverSocket = NULL;
 
     // 连接信号槽
     // Client
@@ -36,6 +35,7 @@ MainWindow::~MainWindow()
     tcpServer->close();
     tcpServer->deleteLater();
     delete this->clientSocket;
+    server_Close_All_Client();
     delete ui;
 }
 
@@ -153,8 +153,8 @@ void MainWindow::on_pushButton_Server_Open_clicked()
     }
     else
     {
-        if (serverSocket != NULL)
-            serverSocket->abort();
+        // 断开所有客户端
+        server_Close_All_Client();
 
         // 关闭监听
         tcpServer->close();
@@ -166,14 +166,14 @@ void MainWindow::on_pushButton_Server_Open_clicked()
 // Server 发送数据
 void MainWindow::on_pushButton_Server_Send_clicked()
 {
-    serverSocket->write(ui->textEdit_Server_Send->toPlainText().toLatin1());
+    tcpClientSocketList.at(tcpClientSocketList.length()-1)->write(ui->textEdit_Server_Send->toPlainText().toLatin1());
 }
 
 // Server 创建新连接
 void MainWindow::server_New_connect()
 {
     // 获取客户端连接
-    serverSocket = tcpServer->nextPendingConnection();
+    QTcpSocket *serverSocket = tcpServer->nextPendingConnection();
     tcpClientSocketList.append(serverSocket);
     InsertClientIntoTableWidget(serverSocket->peerAddress().toString().mid(serverSocket->peerAddress().toString().indexOf(QRegExp("\\d+"))), \
                                 serverSocket->peerPort());
@@ -181,13 +181,13 @@ void MainWindow::server_New_connect()
 //    qDebug() << serverSocket->peerPort();
 
     // 连接QTcpSocket的信号槽
-    connect(tcpClientSocketList.at(tcpClientSocketList.length()-1), &QTcpSocket::readyRead, this, &MainWindow::server_Read_Data);
-    connect(tcpClientSocketList.at(tcpClientSocketList.length()-1), &QTcpSocket::disconnected, this, &MainWindow::server_Disconnected);
+    connect(serverSocket, &QTcpSocket::readyRead, this, &MainWindow::server_Read_Data);
+    connect(serverSocket, &QTcpSocket::disconnected, this, &MainWindow::server_Disconnected);
 
     // 发送按键使能
     ui->pushButton_Server_Send->setEnabled(true);
     qDebug() << "A New Client Connect." << serverSocket->peerAddress().toString().mid(serverSocket->peerAddress().toString().indexOf(QRegExp("\\d+")))\
-             << ":" << serverSocket->peerPort() ;
+             << ":" << serverSocket->peerPort();
 }
 
 // Server 接收数据
@@ -204,7 +204,6 @@ void MainWindow::server_Read_Data()
     {
         if (!ui->textEdit_Server_Receive->toPlainText().isEmpty())
             ui->textEdit_Server_Receive->append("");
-        qDebug() << "1";
     }
 
     // 显示接收时间
@@ -351,5 +350,13 @@ void MainWindow::RemoveClientRow(QString IP, int Port)
                 break;
             }
         }
+    }
+}
+
+// 断开所有客户端
+void MainWindow::server_Close_All_Client()
+{
+    foreach (QTcpSocket *clientSocket, tcpClientSocketList) {
+        clientSocket->abort();
     }
 }
