@@ -329,6 +329,9 @@ void MainWindow::InitClientListTableWidgetUI()
 
     // 设置选中单个
     ui->tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+
+    // 点击表时不对表头行光亮（获取焦点）
+    ui->tableWidget->horizontalHeader()->setHighlightSections(false);
 }
 
 // 控制TableWidget的列宽
@@ -442,6 +445,9 @@ void MainWindow::InitUDPClientTableWidget()
 
     // 设置选中单个
     ui->tableWidget_UDP->setSelectionMode(QAbstractItemView::SingleSelection);
+
+    // 点击表时不对表头行光亮（获取焦点）
+    ui->tableWidget->horizontalHeader()->setHighlightSections(false);
 }
 
 // UDP 客户端列表中添加数据
