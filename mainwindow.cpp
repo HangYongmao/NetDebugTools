@@ -28,6 +28,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Server
     connect(tcpServer, &QTcpServer::newConnection, this, &MainWindow::server_New_connect);
+
+    // UDP
+    udpSocket = new QUdpSocket();
 }
 
 MainWindow::~MainWindow()
@@ -372,4 +375,74 @@ void MainWindow::server_Close_All_Client()
     foreach (QTcpSocket *clientSocket, tcpClientSocketList) {
         clientSocket->abort();
     }
+}
+
+// UDP 打开/关闭
+void MainWindow::on_pushButton_UDP_Open_clicked()
+{
+    if (ui->pushButton_UDP_Open->text() == "打开")
+    {
+        udpSocket->bind(QHostAddress(ui->comboBox_UDP_IP->currentText()), ui->comboBox_UDP_Port->currentText().toLong());
+        connect(udpSocket, &QUdpSocket::readyRead, this, &MainWindow::udp_Socket_Read_Data);
+        typedef void (QAbstractSocket::*QAbstractSocketErrorSignal)(QAbstractSocket::SocketError);
+        connect(udpSocket, static_cast<QAbstractSocketErrorSignal>(&QUdpSocket::error), this, &MainWindow::udp_Socket_Error);
+
+        ui->pushButton_UDP_Send->setEnabled(true);
+    }
+}
+
+// UDP 发送数据
+void MainWindow::on_pushButton_UDP_Send_clicked()
+{
+    udpSocket->writeDatagram("Testtt", QHostAddress("127.0.0.1"), 8889);
+}
+
+// UDP 接收数据
+void MainWindow::udp_Socket_Read_Data()
+{
+    QByteArray ReceiveData;
+    QHostAddress clientAddress;
+    quint16 clientPort;
+    while(udpSocket->hasPendingDatagrams())
+    {
+        QByteArray buffer;
+        buffer.resize(udpSocket->pendingDatagramSize());
+        udpSocket->readDatagram(buffer.data(), buffer.size(), &clientAddress, &clientPort);
+        ReceiveData.append(buffer);
+    }
+
+    qDebug() << clientAddress.toString() << clientPort;
+
+    // 在开头添加空行
+    if (ui->checkBox_UDP_Receive_Time->isChecked() || ui->checkBox_UDP_For_Client->isChecked())
+    {
+        if (!ui->textEdit_UDP_Receive->toPlainText().isEmpty())
+            ui->textEdit_UDP_Receive->append("");
+    }
+
+    // 显示接收时间
+    if (ui->checkBox_UDP_Receive_Time->isChecked())
+    {
+        ui->textEdit_UDP_Receive->append(QString("[%1]").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")));
+    }
+
+    // 显示客户端来源
+    if (ui->checkBox_UDP_For_Client->isChecked())
+    {
+//        QString IP = clientSocket->peerAddress().toString().mid(clientSocket->peerAddress().toString().indexOf(QRegExp("\\d+")));
+//        int Port = clientSocket->peerPort();
+//        ui->textEdit_Server_Receive->append(QString("[From %1:%2]").arg(IP).arg(Port));
+    }
+
+    // 显示Hex
+    if (ui->radioButton_UDP_Receive_A->isChecked())
+        ui->textEdit_UDP_Receive->append(ReceiveData);
+    else
+        ui->textEdit_UDP_Receive->append(QByteArrayToHex(ReceiveData));
+}
+
+// UDP 错误信息
+void MainWindow::udp_Socket_Error(QAbstractSocket::SocketError socketError)
+{
+    qDebug() << socketError;
 }

@@ -10,6 +10,7 @@
 #include <QList>
 #include <QTableWidget>
 #include <QScrollBar>
+#include <QUdpSocket>
 
 namespace Ui {
 class MainWindow;
@@ -30,12 +31,19 @@ private slots:
     void client_Socket_Read_Data();             // Client 接收数据
     void client_Socket_DisConnected();          // Client 断开Socket
     void client_Socket_Error(QAbstractSocket::SocketError socketError); // Client 错误信息
+
 // Server
     void on_pushButton_Server_Open_clicked();   // Server 打开/关闭
     void on_pushButton_Server_Send_clicked();   // Server 发送数据
     void server_New_connect();                  // Server 创建新连接
     void server_Read_Data();                    // Server 接收数据
     void server_Disconnected();                 // Server 断开Socket
+
+// UDP
+    void on_pushButton_UDP_Open_clicked();      // UDP 连接/断开
+    void on_pushButton_UDP_Send_clicked();      // UDP 发送数据
+    void udp_Socket_Read_Data();                // UDP 接收数据
+    void udp_Socket_Error(QAbstractSocket::SocketError socketError); // UDP 错误信息
 
 private:
     Ui::MainWindow *ui;
@@ -50,6 +58,8 @@ private:
     void InsertClientIntoTableWidget(QString IP, int Port); // Server 客户端列表中添加数据
     void RemoveClientRow(QString IP, int Port);     // Server 删除某个客户端连接
     void server_Close_All_Client();         // 断开所有客户端
+
+    QUdpSocket *udpSocket;
 };
 
 #endif // MAINWINDOW_H
