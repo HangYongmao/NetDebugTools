@@ -624,5 +624,24 @@ void MainWindow::on_pushButton_UDP_ADD_clicked()
 // 右键菜单点击事件
 void MainWindow::delete_Client_Action()
 {
-    qDebug() << ui->tabWidget->currentIndex();
+    int currentIndex=0;
+
+    // TCP Server 界面
+    if (ui->tabWidget->currentIndex() == 1)
+    {
+        currentIndex = ui->tableWidget->currentRow();
+        ui->tableWidget->removeRow(currentIndex);
+        tcpClientSocketList.at(currentIndex)->abort();
+        tcpClientSocketList.removeAt(currentIndex);
+    }
+
+    // UDP 界面
+    else if (ui->tabWidget->currentIndex() == 2)
+    {
+        currentIndex = ui->tableWidget_UDP->currentRow();
+        ui->tableWidget_UDP->removeRow(currentIndex);
+        UDPClientList.removeAt(currentIndex);
+    }
+    else
+        return;
 }
