@@ -14,6 +14,7 @@
 #include <QContextMenuEvent>
 #include <QAction>
 #include <QMenu>
+#include <QTimer>
 
 namespace Ui {
 class MainWindow;
