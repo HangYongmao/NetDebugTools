@@ -13,11 +13,6 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">background-color: rgb(240, 240, 240);
-
-/*background-image: url(:/images/bg.JPG);*/</string>
-  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout_9">
     <property name="leftMargin">
@@ -94,9 +89,6 @@
                    <height>20</height>
                   </size>
                  </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(255, 255, 255);</string>
-                 </property>
                  <property name="editable">
                   <bool>true</bool>
                  </property>
@@ -131,9 +123,6 @@
                    <width>0</width>
                    <height>20</height>
                   </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(255, 255, 255);</string>
                  </property>
                  <property name="editable">
                   <bool>true</bool>
@@ -329,9 +318,6 @@
              </property>
              <item>
               <widget class="QTextEdit" name="textEdit_Client_Receive">
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
-               </property>
                <property name="frameShape">
                 <enum>QFrame::NoFrame</enum>
                </property>
@@ -414,9 +400,6 @@
                  <width>16777215</width>
                  <height>75</height>
                 </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
                </property>
               </widget>
              </item>
@@ -503,9 +486,6 @@
                    <height>20</height>
                   </size>
                  </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(255, 255, 255);</string>
-                 </property>
                  <property name="editable">
                   <bool>true</bool>
                  </property>
@@ -540,9 +520,6 @@
                    <width>0</width>
                    <height>20</height>
                   </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(255, 255, 255);</string>
                  </property>
                  <property name="editable">
                   <bool>true</bool>
@@ -784,9 +761,6 @@
              </property>
              <item>
               <widget class="QTextEdit" name="textEdit_Server_Receive">
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
-               </property>
                <property name="frameShape">
                 <enum>QFrame::NoFrame</enum>
                </property>
@@ -869,9 +843,6 @@
                  <width>16777215</width>
                  <height>75</height>
                 </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
                </property>
               </widget>
              </item>
@@ -958,9 +929,6 @@
                    <height>20</height>
                   </size>
                  </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(255, 255, 255);</string>
-                 </property>
                  <property name="editable">
                   <bool>true</bool>
                  </property>
@@ -995,9 +963,6 @@
                    <width>0</width>
                    <height>20</height>
                   </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(255, 255, 255);</string>
                  </property>
                  <property name="editable">
                   <bool>true</bool>
@@ -1239,9 +1204,6 @@
              </property>
              <item>
               <widget class="QTextEdit" name="textEdit_UDP_Receive">
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
-               </property>
                <property name="frameShape">
                 <enum>QFrame::NoFrame</enum>
                </property>
@@ -1372,9 +1334,6 @@
                  <width>16777215</width>
                  <height>75</height>
                 </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
                </property>
               </widget>
              </item>

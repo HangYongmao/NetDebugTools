@@ -34,21 +34,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // UDP
     udpSocket = new QUdpSocket();
-
-    QString verticalBarStyleSheet="QScrollBar{background:transparent; width: 10px;}"
-                                  "QScrollBar::handle{background:lightgray; border:2px solid transparent; border-radius:5px;}"
-                                  "QScrollBar::handle:hover{background:gray;}"
-                                  "QScrollBar::sub-line{background:transparent;}"
-                                  "QScrollBar::add-line{background:transparent;}";
-    ui->tableWidget->verticalScrollBar()->setStyleSheet(verticalBarStyleSheet);
-    ui->tableWidget_UDP->verticalScrollBar()->setStyleSheet(verticalBarStyleSheet);
-
-    ui->textEdit_Client_Receive->verticalScrollBar()->setStyleSheet(verticalBarStyleSheet);
-    ui->textEdit_Client_Send->verticalScrollBar()->setStyleSheet(verticalBarStyleSheet);
-    ui->textEdit_Server_Receive->verticalScrollBar()->setStyleSheet(verticalBarStyleSheet);
-    ui->textEdit_Server_Send->verticalScrollBar()->setStyleSheet(verticalBarStyleSheet);
-    ui->textEdit_UDP_Receive->verticalScrollBar()->setStyleSheet(verticalBarStyleSheet);
-    ui->textEdit_UDP_Send->verticalScrollBar()->setStyleSheet(verticalBarStyleSheet);
 }
 
 MainWindow::~MainWindow()
@@ -315,8 +300,8 @@ void MainWindow::InitClientListTableWidgetUI()
     ui->tableWidget->verticalHeader()->setVisible(false);
 
     // 隔行换色
-    ui->tableWidget->setAlternatingRowColors(true);
-    ui->tableWidget->setStyleSheet("alternate-background-color: rgb(240, 240, 240);");
+    // ui->tableWidget->setAlternatingRowColors(true);
+    // ui->tableWidget->setStyleSheet("alternate-background-color: rgb(240, 240, 240);");
 
     // 列宽禁止拖动
     // ui->tableWidget->horizontalHeader()->setDisabled(true);
@@ -337,6 +322,7 @@ void MainWindow::InitClientListTableWidgetUI()
 // 控制TableWidget的列宽
 void MainWindow::paintEvent(QPaintEvent *event)
 {
+    return;
     // 2:1
     int width=0;
     if (event != NULL)
@@ -469,8 +455,8 @@ void MainWindow::InitUDPClientTableWidget()
     ui->tableWidget_UDP->verticalHeader()->setVisible(false);
 
     // 隔行换色
-    ui->tableWidget_UDP->setAlternatingRowColors(true);
-    ui->tableWidget_UDP->setStyleSheet("alternate-background-color: rgb(240, 240, 240);");
+    // ui->tableWidget_UDP->setAlternatingRowColors(true);
+    // ui->tableWidget_UDP->setStyleSheet("alternate-background-color: rgb(240, 240, 240);");
 
     // 列宽禁止拖动
     // ui->tableWidget_UDP->horizontalHeader()->setDisabled(true);
