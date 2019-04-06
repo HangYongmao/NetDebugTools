@@ -192,22 +192,6 @@
                </property>
               </widget>
              </item>
-             <item>
-              <spacer name="verticalSpacer">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Minimum</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>10</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
             </layout>
            </widget>
           </item>
@@ -243,22 +227,6 @@
                 </widget>
                </item>
               </layout>
-             </item>
-             <item>
-              <spacer name="verticalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Minimum</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>10</height>
-                </size>
-               </property>
-              </spacer>
              </item>
             </layout>
            </widget>
@@ -301,20 +269,8 @@
              <string>数据日志</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_6">
-             <property name="spacing">
-              <number>0</number>
-             </property>
              <property name="leftMargin">
-              <number>1</number>
-             </property>
-             <property name="topMargin">
-              <number>2</number>
-             </property>
-             <property name="rightMargin">
-              <number>1</number>
-             </property>
-             <property name="bottomMargin">
-              <number>1</number>
+              <number>0</number>
              </property>
              <item>
               <widget class="QTextEdit" name="textEdit_Client_Receive">
@@ -596,22 +552,6 @@
                </property>
               </widget>
              </item>
-             <item>
-              <spacer name="verticalSpacer_3">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Minimum</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>10</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
             </layout>
            </widget>
           </item>
@@ -648,22 +588,6 @@
                </item>
               </layout>
              </item>
-             <item>
-              <spacer name="verticalSpacer_4">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Minimum</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>10</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
             </layout>
            </widget>
           </item>
@@ -693,9 +617,6 @@
             <layout class="QVBoxLayout" name="verticalLayout_15">
              <property name="leftMargin">
               <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>2</number>
              </property>
              <property name="rightMargin">
               <number>0</number>
@@ -744,20 +665,8 @@
              <string>数据日志</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_13">
-             <property name="spacing">
-              <number>0</number>
-             </property>
              <property name="leftMargin">
-              <number>1</number>
-             </property>
-             <property name="topMargin">
-              <number>2</number>
-             </property>
-             <property name="rightMargin">
-              <number>1</number>
-             </property>
-             <property name="bottomMargin">
-              <number>1</number>
+              <number>0</number>
              </property>
              <item>
               <widget class="QTextEdit" name="textEdit_Server_Receive">
@@ -1039,22 +948,6 @@
                </property>
               </widget>
              </item>
-             <item>
-              <spacer name="verticalSpacer_6">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Minimum</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>10</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
             </layout>
            </widget>
           </item>
@@ -1091,22 +984,6 @@
                </item>
               </layout>
              </item>
-             <item>
-              <spacer name="verticalSpacer_7">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Minimum</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>10</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
             </layout>
            </widget>
           </item>
@@ -1136,9 +1013,6 @@
             <layout class="QVBoxLayout" name="verticalLayout_20">
              <property name="leftMargin">
               <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>2</number>
              </property>
              <property name="rightMargin">
               <number>0</number>
@@ -1187,20 +1061,8 @@
              <string>数据日志</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_22">
-             <property name="spacing">
-              <number>0</number>
-             </property>
              <property name="leftMargin">
-              <number>1</number>
-             </property>
-             <property name="topMargin">
-              <number>2</number>
-             </property>
-             <property name="rightMargin">
-              <number>1</number>
-             </property>
-             <property name="bottomMargin">
-              <number>1</number>
+              <number>0</number>
              </property>
              <item>
               <widget class="QTextEdit" name="textEdit_UDP_Receive">

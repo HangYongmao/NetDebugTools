@@ -13,10 +13,9 @@ MainWindow::MainWindow(QWidget *parent) :
     MainWindow::setWindowIcon(QIcon(":/images/disconnect.png"));
 
     // Server 客户端列表
-    QTimer::singleShot(100, this, &MainWindow::InitClientListTableWidgetUI);
-
+    InitClientListTableWidgetUI();
     // UDP 客户端列表
-    QTimer::singleShot(200, this, &MainWindow::InitUDPClientTableWidget);
+    InitUDPClientTableWidget();
 
     clientSocket = new QTcpSocket();
 
@@ -35,6 +34,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // UDP
     udpSocket = new QUdpSocket();
+
+    QFile qss("style.qss");
+    if (qss.open(QFile::ReadWrite))
+    {
+        this->setStyleSheet(qss.readAll());
+        qss.close();
+    }
 }
 
 MainWindow::~MainWindow()
@@ -291,8 +297,8 @@ void MainWindow::InitClientListTableWidgetUI()
     ui->tableWidget->setHorizontalHeaderLabels(header);
 
     // 列宽
-    ui->tableWidget->setColumnWidth(0, ui->tableWidget->width()-ui->tableWidget->width()/3-10);
-    ui->tableWidget->setColumnWidth(1, (ui->tableWidget->width()-10)/3);
+    ui->tableWidget->setColumnWidth(0, 100);
+    ui->tableWidget->setColumnWidth(1, 50);
 
     // 表格禁止编辑
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -446,8 +452,8 @@ void MainWindow::InitUDPClientTableWidget()
     ui->tableWidget_UDP->setHorizontalHeaderLabels(header);
 
     // 列宽
-    ui->tableWidget_UDP->setColumnWidth(0, ui->tableWidget_UDP->width()-ui->tableWidget_UDP->width()/3-10);
-    ui->tableWidget_UDP->setColumnWidth(1, (ui->tableWidget_UDP->width()-10)/3);
+    ui->tableWidget_UDP->setColumnWidth(0, 100);
+    ui->tableWidget_UDP->setColumnWidth(1, 50);
 
     // 表格禁止编辑
     ui->tableWidget_UDP->setEditTriggers(QAbstractItemView::NoEditTriggers);

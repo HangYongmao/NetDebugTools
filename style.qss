@@ -198,7 +198,7 @@ QGroupBox {
     border: 1px solid #32414B;
     border-radius: 4px;
     padding: 4px;
-    margin-top: 16px;
+    margin-top: 0px;
 }
 
 
@@ -209,7 +209,7 @@ QGroupBox::title {
     left: 3px;
     padding-left: 3px;
     padding-right: 5px;
-    padding-top: 8px;
+    padding-top: 0px;
     padding-bottom: 16px;
 }
 
